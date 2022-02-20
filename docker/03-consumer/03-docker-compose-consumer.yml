@@ -1,0 +1,31 @@
+version: '3.3'
+
+networks:
+  web:
+    external: true
+
+services:
+  consumer:
+    build:
+      context: ../..
+      dockerfile: Dockerfile-consumer.localhost
+      env_file: .env
+    networks:
+      - web
+    # Here we define our settings for traefik how to proxy our service.
+    labels:
+      # This is enableing treafik to proxy this service
+      - "traefik.enable=false"
+    restart: always
+  producer:
+    build:
+      context: ../..
+      dockerfile: Dockerfile-producer.localhost
+      env_file: .env
+    networks:
+      - web
+    # Here we define our settings for traefik how to proxy our service.
+    labels:
+      # This is enableing treafik to proxy this service
+      - "traefik.enable=false"
+    restart: always

@@ -1,0 +1,32 @@
+version: "3.8"
+
+networks:
+  web:
+    external: true
+
+services:
+    rabbitmq3:
+        container_name: "rabbitmq"
+        image: rabbitmq:3.9-management-alpine
+        environment:
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+        ports:
+            # AMQP protocol port
+            - '5672:5672'
+            # HTTP management UI
+            - '15672:15672'
+        networks:
+            - web
+        # Here we define our settings for traefik how to proxy our service.
+        labels:
+          # This is enableing treafik to proxy this service
+          - "traefik.enable=true"
+          # Here we have to define the URL
+          - "traefik.http.routers.rabbitmq.rule=Host(`rabbitmq.localhost`)"
+          # Here we are defining wich entrypoint should be used by clients to access this service
+          - "traefik.http.routers.rabbitmq.entrypoints=web"
+          # Here we define in wich network treafik can find this service
+          - "traefik.docker.network=web"
+          # This is the port that traefik should proxy
+          - "traefik.http.services.rabbitmq.loadbalancer.server.port=15672"

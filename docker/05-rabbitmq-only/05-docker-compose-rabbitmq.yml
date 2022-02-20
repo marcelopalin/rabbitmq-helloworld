@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+    rabbitmq3:
+        container_name: "rabbitmq"
+        image: rabbitmq:3.9-management-alpine
+        env_file: .env
+        environment:
+            - RABBITMQ_DEFAULT_USER=${DYNACONF_RABBITMQ_DEFAULT_USER}
+            - RABBITMQ_DEFAULT_PASS=${DYNACONF_RABBITMQ_DEFAULT_PASS}
+        ports:
+            # AMQP protocol port
+            - '5672:5672'
+            # HTTP management UI
+            - '15672:15672'

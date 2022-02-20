@@ -1,0 +1,7 @@
+[default]
+HOME_DIR = "@jinja {{env.HOME}}"
+DIR_OUTPUT="@jinja {{this.HOME_DIR}}/saida"
+
+[development]
+
+[production]
